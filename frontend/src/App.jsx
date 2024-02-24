@@ -5,6 +5,7 @@ import Home from "./Pages/Home";
 import Login from "./Pages/Login";
 import Signup from "./Pages/Signup";
 import AddLand from "./Pages/Dashboard/AddLand";
+import ViewLand from "./Pages/Dashboard/ViewLand";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/addland" element={<AddLand />} />
+        <Route path="/View" element={<ViewLand />} />
       </Routes>
     </BrowserRouter>
   );

@@ -35,7 +35,7 @@ const LandProvider = ({ children }) => {
         const signer = await provider.getSigner();
         const landContract = new ethers.Contract(landAddress, landABI, signer);
 
-        const availableLands = await landContract.getUserVehicles(tempAddress);
+        const availableLands = await landContract.getUserLands(tempAddress);
         const structuredTransactions = availableLands.map((transaction) => ({
           landId: transaction.landId,
           location: transaction.location,
@@ -68,7 +68,7 @@ const LandProvider = ({ children }) => {
 
       if (accounts.length) {
         setCurrentAccount(accounts[0]);
-        // getUserLandsfunc(accounts[0]);
+        getUserLandsfunc(accounts[0]);
       } else {
         connectWallet();
         console.log("No accounts found");
@@ -149,6 +149,40 @@ const LandProvider = ({ children }) => {
     }
   };
 
+  const transferLandfunc = async (formData) => {
+    try {
+      if (window.ethereum) {
+        const { landId, newOwnerAddress, transferAmount } = formData;
+
+        const provider = new ethers.BrowserProvider(window.ethereum);
+        const signer = await provider.getSigner();
+        const landContract = new ethers.Contract(landAddress, landABI, signer);
+
+        const exchangeRate = transferAmount;
+        const transferAmountInWei = utils.parseUnits(
+          (transferAmount * exchangeRate).toString(),
+          "wei"
+        );
+
+        const transactionHash = await landContract.transferLand(
+          landId,
+          newOwnerAddress,
+          { value: transferAmountInWei }
+        );
+        setIsLoading(true);
+        console.log(`Loading - ${transactionHash.hash}`);
+        await transactionHash.wait();
+        console.log(`Success - ${transactionHash.hash}`);
+        setIsLoading(false);
+      } else {
+        console.log("No ethereum object");
+      }
+    } catch (error) {
+      console.log(error);
+      throw new Error("Error transferring land");
+    }
+  };
+
   useEffect(() => {
     connectWallet();
     checkIfWalletIsConnect();
@@ -167,6 +201,7 @@ const LandProvider = ({ children }) => {
         handleChange,
         formData,
         checkIfWalletIsConnect,
+        transferLandfunc,
       }}
     >
       {children}

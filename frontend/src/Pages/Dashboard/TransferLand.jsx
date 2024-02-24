@@ -4,7 +4,7 @@ import { LandContext } from "../../context/LandContext";
 
 // import { ethers } from "ethers";
 
-const AddLand = () => {
+const TransferLand = () => {
   const [error, setError] = useState("");
   const [iserror, setIsError] = useState(false);
   const [location, setLocation] = useState("");
@@ -16,7 +16,13 @@ const AddLand = () => {
   const navigate = useNavigate();
 
   const {
+    currentAccount,
+    LandCount,
+    connectWallet,
+    transactions,
+    isLoading,
     addLandToBlockchain,
+    handleChange,
     formData,
     checkIfWalletIsConnect,
   } = useContext(LandContext);
@@ -173,4 +179,4 @@ const AddLand = () => {
   );
 };
 
-export default AddLand;
+export default TransferLand;
