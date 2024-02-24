@@ -4,6 +4,7 @@ import Header from "../Components/Header";
 function Home() {
   return (
     <div className=" h-full ">
+      <Header/>
       <div
         className="h-[530px] flex flex-col items-center justify-center bg-cover "
         style={{
