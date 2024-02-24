@@ -7,6 +7,7 @@ import Signup from "./Pages/Signup";
 import AddLand from "./Pages/Dashboard/AddLand";
 import ViewLand from "./Pages/Dashboard/ViewLand";
 import TransferLand from "./Pages/Dashboard/TransferLand";
+import Dashboard from "./Pages/Dashboard/Dashboard";
 import Chat from "./Pages/Chat";
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
         <Route path="/View" element={<ViewLand />} />
         <Route path="/transfer" element={<TransferLand />} />
         <Route path="/chat" element={<Chat />} />
+        <Route path="/dashboard" element={<Dashboard />} />
       </Routes>
     </BrowserRouter>
   );
