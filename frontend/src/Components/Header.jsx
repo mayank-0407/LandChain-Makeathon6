@@ -1,5 +1,4 @@
 import React from "react";
-import LoginPage from "./LoginPage";
 import { NavLink } from "react-router-dom";
 
 function Header() {

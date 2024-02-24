@@ -3,10 +3,11 @@ import ReactDOM from "react-dom/client";
 import App from "./App.jsx";
 import "./index.css";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import LoginPage from "./Components/LoginPage.jsx";
+import Signup from "./Pages/Signup.jsx";
 import Layout from "./Layout.jsx";
-import Home from "./Components/Home.jsx";
+import Home from "./Pages/Home.jsx";
 import Login from "./Pages/Login.jsx";
+import AddVehicle from "./Pages/Dashboard/AddVehicle.jsx";
 
 const router = createBrowserRouter([
   {
@@ -19,11 +20,15 @@ const router = createBrowserRouter([
       },
       {
         path: "signup",
-        element: <LoginPage />,
+        element: <Signup />,
       },
       {
         path: "login",
         element: <Login />,
+      },
+      {
+        path: "dashboard",
+        element: <AddVehicle />,
       },
     ],
   },
