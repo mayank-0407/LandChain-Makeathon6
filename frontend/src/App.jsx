@@ -6,21 +6,21 @@ import Login from "./Pages/Login";
 import Signup from "./Pages/Signup";
 import AddLand from "./Pages/Dashboard/AddLand";
 import ViewLand from "./Pages/Dashboard/ViewLand";
+import TransferLand from "./Pages/Dashboard/TransferLand";
 
 function App() {
-  const [count, setCount] = useState(0);
-
-  return (
-    <BrowserRouter className="flex items-center justify-center">
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/addland" element={<AddLand />} />
-        <Route path="/View" element={<ViewLand />} />
-      </Routes>
-    </BrowserRouter>
-  );
+	return (
+		<BrowserRouter className="flex items-center justify-center">
+			<Routes>
+				<Route path="/" element={<Home />} />
+				<Route path="/login" element={<Login />} />
+				<Route path="/signup" element={<Signup />} />
+				<Route path="/addland" element={<AddLand />} />
+				<Route path="/View" element={<ViewLand />} />
+				<Route path="/transfer" element={<TransferLand />} />
+			</Routes>
+		</BrowserRouter>
+	);
 }
 
 export default App;
