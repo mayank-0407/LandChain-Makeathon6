@@ -7,7 +7,7 @@ import Signup from "./Pages/Signup.jsx";
 import Layout from "./Layout.jsx";
 import Home from "./Pages/Home.jsx";
 import Login from "./Pages/Login.jsx";
-import AddVehicle from "./Pages/Dashboard/AddVehicle.jsx";
+import AddLand from "./Pages/Dashboard/AddLand.jsx";
 
 const router = createBrowserRouter([
   {
@@ -28,7 +28,7 @@ const router = createBrowserRouter([
       },
       {
         path: "dashboard",
-        element: <AddVehicle />,
+        element: <AddLand />,
       },
     ],
   },

@@ -123,13 +123,10 @@ const LandProvider = ({ children }) => {
     try {
       if (window.ethereum) {
         const {
-          landId,
           location,
           area,
           dimensionOfLand,
           landIdentificationNumber,
-          transferAmount,
-          status,
           landType,
         } = formData;
 
