@@ -19,14 +19,14 @@ contract LandRegistery {
         string landIdentificationNumber;
         LandStatus status;
         LandType landType;
-        uint256 transferAmount; // Added field to store the transfer amount
+        string transferAmount; // Added field to store the transfer amount
     }
 
     mapping(address => Land[]) public userLands;
     mapping(uint256 => Land) public allLands;
 
     event LandRegistered(uint256 indexed landId, address indexed owner, string location, string area, string dimensionOfLand, string landIdentificationNumber, LandType landType);
-    event LandTransferred(uint256 indexed landId, address indexed from, address indexed to, uint256 transferAmount); // Modified event to include transferAmount
+    event LandTransferred(uint256 indexed landId, address indexed from, address indexed to, string transferAmount); // Modified event to include transferAmount
 
     modifier onlyOwner() {
         require(msg.sender == owner, "Not the contract owner");
@@ -69,7 +69,7 @@ contract LandRegistery {
             landIdentificationNumber: _landIdentificationNumber,
             status: LandStatus.Registered,
             landType: _landType,
-            transferAmount: 0 
+            transferAmount: "0" 
         });
 
         userLands[msg.sender].push(newLand);
@@ -78,12 +78,12 @@ contract LandRegistery {
         emit LandRegistered(landId, msg.sender, _location, _area, _dimensionOfLand, _landIdentificationNumber, _landType);
     }
 
-    function transferLand(uint256 _landId, address _newOwner, uint256 _transferAmount) external onlyOwner landExists(_landId) {
+    function transferLand(uint256 _landId, address _newOwner, string memory _transferAmount) external onlyOwner landExists(_landId) {
         Land storage land = allLands[_landId];
 
         require(land.currentOwner == msg.sender, "You are not the current owner of this land");
 
-        payable(land.currentOwner).transfer(_transferAmount);
+        // payable(land.currentOwner).transfer(_transferAmount);
 
         land.prevOwner = land.currentOwner;
         land.currentOwner = _newOwner;

@@ -49,7 +49,7 @@ const LandProvider = ({ children }) => {
           currentOwner: transaction.currentOwner,
         }));
 
-        console.log(structuredTransactions);
+        console.log("All Transactions : ", structuredTransactions);
         console.log("In get All Transaction");
         setTransactions(structuredTransactions);
       } else {
@@ -150,28 +150,37 @@ const LandProvider = ({ children }) => {
   };
 
   const transferLandfunc = async (formData) => {
-    if (!ethers.utils) {
-        throw new Error("ethers.utils is not available");
-      }
-    try {
+    if (true) {
       if (window.ethereum) {
         const { landId, newOwnerAddress, transferAmount } = formData;
 
         const provider = new ethers.BrowserProvider(window.ethereum);
         const signer = await provider.getSigner();
-        const landContract = new ethers.Contract(landAddress, landABI, signer);
 
-        const exchangeRate = 0.000012; // 1 INR = 0.000012 ETH
-        const transferAmountInWei = ethers.utils.parseUnits(
-          (transferAmount * exchangeRate).toString(),
-          "wei"
-        );
+        const landContract = new ethers.Contract(landAddress, landABI, signer);
+        const exchangeRate = "50735.67";
+
+        const parsedAmount = ethers.parseEther(transferAmount);
+
+        await ethereum.request({
+          method: "eth_sendTransaction",
+          params: [
+            {
+              from: currentAccount,
+              to: newOwnerAddress,
+              gas: "0x5208",
+              value: parsedAmount.toString(16),
+            },
+          ],
+        });
+        console.log("parsedAmount : ", parsedAmount);
 
         const transactionHash = await landContract.transferLand(
           landId,
           newOwnerAddress,
-          { value: transferAmountInWei }
+          transferAmount
         );
+        console.log("Error aya error");
         setIsLoading(true);
         console.log(`Loading - ${transactionHash.hash}`);
         await transactionHash.wait();
@@ -180,10 +189,11 @@ const LandProvider = ({ children }) => {
       } else {
         console.log("No ethereum object");
       }
-    } catch (error) {
-      console.log(error);
-      throw new Error("Error transferring land");
     }
+    // catch (error) {
+    //   console.log(error);
+    //   throw new Error("Error transferring land");
+    // }
   };
 
   useEffect(() => {

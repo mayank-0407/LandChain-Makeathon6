@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { LandContext } from "../../context/LandContext";
 
-// import { ethers } from "ethers";
+import { ethers } from "ethers";
 
 const TransferLand = () => {
   const [error, setError] = useState("");
@@ -30,18 +30,16 @@ const TransferLand = () => {
     console.log("hi");
 
     let tformData = {
-      landId:44078226526886773181989402779580852541419760945729228144413904617365322072064,
+      landId:23605435676249247752549801217230229776778712319924822140605527300529037770752n,
       newOwnerAddress,
       transferAmount,
     };
-    console.log("In frontend", tformData);
     const tempid = transferLandfunc(tformData);
     console.log(tempid);
   };
 
   useEffect(() => {
     checkIfWalletIsConnect();
-    console.log("print Land added: ", formData);
   }, []);
 
   return (
@@ -86,7 +84,7 @@ const TransferLand = () => {
                     Add the Amount to Pay
                   </label>
                   <input
-                    type="text"
+                    type="float"
                     name="transferAmount"
                     id="transferAmount"
                     value={transferAmount}
