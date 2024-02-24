@@ -7,11 +7,8 @@ import { LandContext } from "../../context/LandContext";
 const TransferLand = () => {
   const [error, setError] = useState("");
   const [iserror, setIsError] = useState(false);
-  const [location, setLocation] = useState("");
-  const [area, setArea] = useState("");
-  const [dimensionOfLand, setDimensionOfLand] = useState("");
-  const [landIdentificationNumber, setLandIdentificationNumber] = useState("");
-  const [landType, setLandType] = useState("");
+  const [newOwnerAddress, setNewOwnerAddress] = useState("");
+  const [transferAmount, setTransferAmount] = useState("");
 
   const navigate = useNavigate();
 
@@ -25,6 +22,7 @@ const TransferLand = () => {
     handleChange,
     formData,
     checkIfWalletIsConnect,
+    transferLandfunc,
   } = useContext(LandContext);
 
   const handleNewSubmit = async (e) => {
@@ -32,14 +30,12 @@ const TransferLand = () => {
     console.log("hi");
 
     let tformData = {
-      location: location,
-      area: area,
-      dimensionOfLand: dimensionOfLand,
-      landIdentificationNumber: landIdentificationNumber,
-      landType: landType,
+      landId:44078226526886773181989402779580852541419760945729228144413904617365322072064,
+      newOwnerAddress,
+      transferAmount,
     };
     console.log("In frontend", tformData);
-    const tempid = addLandToBlockchain(tformData);
+    const tempid = transferLandfunc(tformData);
     console.log(tempid);
   };
 
@@ -59,98 +55,44 @@ const TransferLand = () => {
         <div className="flex flex-col md:flex-row">
           <div className=" order-2 md:order-1">
             <div className="p-8">
-              <h1 className="text-3xl font-bold mb-4 text-center">Add Land</h1>
+              <h1 className="text-3xl font-bold mb-4 text-center">
+                Transfer Land
+              </h1>
 
               <form className="mb-4" onSubmit={handleNewSubmit}>
                 <div className="mb-2">
                   <label
-                    htmlFor="location"
+                    htmlFor="newOwnerAddress"
                     className="block mb-2 text-left font-semibold"
                   >
-                    Location
+                    Address of the new owner
                   </label>
                   <input
                     type="text"
-                    name="location"
-                    id="location"
-                    value={location}
-                    onChange={(e) => setLocation(e.target.value)}
-                    placeholder="Enter the Location!"
+                    name="newOwnerAddress"
+                    id="newOwnerAddress"
+                    value={newOwnerAddress}
+                    onChange={(e) => setNewOwnerAddress(e.target.value)}
+                    placeholder="Enter the newOwnerAddress!"
                     className="w-full p-2 border border-gray-300 rounded-2xl mb-2 text-sm bg-blue-50 opacity-50"
                     required
                   />
                 </div>
                 <div className="mb-2">
                   <label
-                    htmlFor="area"
+                    htmlFor="transferAmount"
                     className="block mb-2 text-left font-semibold"
                   >
-                    Area
+                    Add the Amount to Pay
                   </label>
                   <input
                     type="text"
-                    name="area"
-                    id="area"
-                    value={area}
-                    onChange={(e) => setArea(e.target.value)}
+                    name="transferAmount"
+                    id="transferAmount"
+                    value={transferAmount}
+                    onChange={(e) => setTransferAmount(e.target.value)}
                     placeholder="Enter the Area!"
                     className="w-full p-2 border border-gray-300 rounded-2xl mb-2 text-sm bg-blue-50 opacity-50"
-                    required
-                  />
-                </div>
-                <div className="mb-2">
-                  <label
-                    htmlFor="dimensionOfLand"
-                    className="block mb-2 text-left font-semibold"
-                  >
-                    DimensionOfLand
-                  </label>
-                  <input
-                    type="text"
-                    name="dimensionOfLand"
-                    id="dimensionOfLand"
-                    value={dimensionOfLand}
-                    onChange={(e) => setDimensionOfLand(e.target.value)}
-                    placeholder="Enter the dimensionOfLand!"
-                    className="w-full p-2 border border-gray-300 rounded-2xl mb-2 bg-blue-50 text-sm opacity-50"
-                    required
-                  />
-                </div>
-                <div className="mb-4">
-                  <label
-                    htmlFor="landIdentificationNumber"
-                    className="block mb-2 text-left font-semibold"
-                  >
-                    LandIdentificationNumber
-                  </label>
-                  <input
-                    type="text"
-                    name="landIdentificationNumber"
-                    id="landIdentificationNumber"
-                    value={landIdentificationNumber}
-                    onChange={(e) =>
-                      setLandIdentificationNumber(e.target.value)
-                    }
-                    placeholder="Enter the landIdentificationNumber!"
-                    className="w-full p-2 border border-gray-300 rounded-2xl mb-2 bg-blue-50 text-sm opacity-50"
-                    required
-                  />
-                </div>
-                <div className="mb-4">
-                  <label
-                    htmlFor="landType"
-                    className="block mb-2 text-left font-semibold"
-                  >
-                    LandType
-                  </label>
-                  <input
-                    type="text"
-                    name="landType"
-                    id="landType"
-                    value={landType}
-                    onChange={(e) => setLandType(e.target.value)}
-                    placeholder="Enter the landType!"
-                    className="w-full p-2 border border-gray-300 rounded-2xl mb-2 bg-blue-50 text-sm opacity-50"
                     required
                   />
                 </div>

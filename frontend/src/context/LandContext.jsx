@@ -150,6 +150,9 @@ const LandProvider = ({ children }) => {
   };
 
   const transferLandfunc = async (formData) => {
+    if (!ethers.utils) {
+        throw new Error("ethers.utils is not available");
+      }
     try {
       if (window.ethereum) {
         const { landId, newOwnerAddress, transferAmount } = formData;
@@ -158,8 +161,8 @@ const LandProvider = ({ children }) => {
         const signer = await provider.getSigner();
         const landContract = new ethers.Contract(landAddress, landABI, signer);
 
-        const exchangeRate = transferAmount;
-        const transferAmountInWei = utils.parseUnits(
+        const exchangeRate = 0.000012; // 1 INR = 0.000012 ETH
+        const transferAmountInWei = ethers.utils.parseUnits(
           (transferAmount * exchangeRate).toString(),
           "wei"
         );

@@ -6,6 +6,7 @@ import Login from "./Pages/Login";
 import Signup from "./Pages/Signup";
 import AddLand from "./Pages/Dashboard/AddLand";
 import ViewLand from "./Pages/Dashboard/ViewLand";
+import TransferLand from "./Pages/Dashboard/TransferLand";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Route path="/signup" element={<Signup />} />
         <Route path="/addland" element={<AddLand />} />
         <Route path="/View" element={<ViewLand />} />
+        <Route path="/transfer" element={<TransferLand />} />
       </Routes>
     </BrowserRouter>
   );
