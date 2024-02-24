@@ -1,12 +1,18 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { LandContext } from "../../context/LandContext";
+import { loginUser, fetchUserDetails } from "../../utils/authAPI";
+import { addLand } from "../../utils/landAPI";
+import { getToken, isLogin } from "../../utils/cookieSetup";
 
 // import { ethers } from "ethers";
 
 const AddLand = () => {
   const [error, setError] = useState("");
   const [iserror, setIsError] = useState(false);
+  const [sessionId, setSessionId] = useState("");
+  const [myUser, setMyUser] = useState("");
+  const [isLoggedd, setisLoggedd] = useState(false);
   const [location, setLocation] = useState("");
   const [area, setArea] = useState("");
   const [dimensionOfLand, setDimensionOfLand] = useState("");
@@ -15,15 +21,15 @@ const AddLand = () => {
 
   const navigate = useNavigate();
 
-  const {
-    addLandToBlockchain,
-    formData,
-    checkIfWalletIsConnect,
-  } = useContext(LandContext);
+  const { addLandToBlockchain, formData, checkIfWalletIsConnect } =
+    useContext(LandContext);
 
   const handleNewSubmit = async (e) => {
     e.preventDefault();
-    console.log("hi");
+
+    const myToken = getToken();
+    const thisUser = await fetchUserDetails(myToken);
+    setMyUser(thisUser.data.id);
 
     let tformData = {
       location: location,
@@ -32,12 +38,33 @@ const AddLand = () => {
       landIdentificationNumber: landIdentificationNumber,
       landType: landType,
     };
-    console.log("In frontend", tformData);
-    const tempid = addLandToBlockchain(tformData);
+    const tempid = await addLandToBlockchain(tformData);
     console.log(tempid);
+    let formDataDB = {
+      location: location,
+      area: area,
+      dimensionOfLand: dimensionOfLand,
+      landIdentificationNumber: landIdentificationNumber,
+      landType: landType,
+      ownerId: thisUser.data.id,
+    };
+    const res = await addLand(formDataDB);
+    console.log("Res : ", res);
+    if (res.status === 200) {
+      navigate("/dashboard");
+    } else {
+      console.log(res.data.message);
+    }
   };
 
   useEffect(() => {
+    const checkLoginSession = isLogin();
+    if (checkLoginSession) {
+      setisLoggedd(true);
+    } else {
+      setisLoggedd(false);
+      navigate("/login");
+    }
     checkIfWalletIsConnect();
     console.log("print Land added: ", formData);
   }, []);
