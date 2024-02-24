@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-//import { loginUser } from "../Utils/authAPI";
-//import { setSessionTocken } from "../Utils/cookieSetup";
+import { loginUser } from "../api/authApi";
+import { setSessionTocken } from "../api/cookieSetup";
 
 function Login() {
   const [email, setEmail] = useState("");

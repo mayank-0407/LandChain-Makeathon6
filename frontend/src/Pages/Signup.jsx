@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { NavLink } from "react-router-dom";
-//import { signUpUser } from "../Utils/authAPI";
+import { signUpUser } from "../api/authApi";
 
 const Signup = () => {
   const [error, setError] = useState("");
@@ -13,6 +13,7 @@ const Signup = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const navigate = useNavigate();
+  
   const handleSignup = async (e) => {
     e.preventDefault();
     if (confirmPassword !== password) {
@@ -30,10 +31,10 @@ const Signup = () => {
       if (res.status === 200) {
         navigate("/login");
         setIsError(true);
-        setError(res.msg);
+        setError(res.message);
       } else {
         setIsError(true);
-        setError(res.msg);
+        setError(res.message);
       }
     } catch (error) {
       console.log(error);

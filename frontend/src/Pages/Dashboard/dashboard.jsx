@@ -1,19 +1,33 @@
 import React from "react";
 import { MdLocationPin } from "react-icons/md";
-import cardData from "./cardData.json";
+import cardData from "../../Components/cardData.json";
+import Header from "../../Components/Header";
+import YouTube from "react-youtube";
+
 
 function Dashboard() {
 	return (
-		<div className="p-4 h-full flex items-center flex-col justify-start bg-cover">
-			<div
-				className="flex w-full h-96 bg-slate-700 rounded-lg object-fill bg-cover justify-start items-end"
-				style={{
-					backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 0), rgb(255, 255, 255)), url("https://images.unsplash.com/photo-1591389703635-e15a07b842d7?q=80&w=2833&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D")`,
-				}}
-			>
+		<div className="h-full flex items-center flex-col justify-start bg-cover">
+			<Header />
+			<div className="flex w-full h-96 bg-slate-700 object-fill bg-cover justify-start items-end">
+				<YouTube
+					videoId="NGFFNsxQ-Mg / CJ15 ZY1Z M2GH" 
+					className="w-full h-full object-cover absolute top-0 left-0"
+					opts={{
+						playerVars: {
+							autoplay: 1,
+							loop: 1,
+							controls: 0,
+							showinfo: 0,
+							mute: 1,
+							playlist: "NGFFNsxQ-Mg",
+						},
+					}}
+				/>
+
 				<div className="flex-col p-5 w-full">
 					<p className="text-2xl pb-4 font-bold">Services</p>
-					<ul className="flex flex-row justify-start">
+					<ul className="flex flex-row justify-center">
 						<li></li>
 						<button className="p-4 px-36 mr-8 rounded-md bg-slate-600 text-white">
 							ews
@@ -24,7 +38,7 @@ function Dashboard() {
 						<button className="p-4 px-36 mr-8 rounded-md bg-slate-600 text-white">
 							ews
 						</button>
-						<button className="p-4 px-36 mr-8 rounded-md bg-slate-600 text-white">
+						<button className="p-4 px-36 rounded-md bg-slate-600 text-white">
 							ews
 						</button>
 					</ul>
@@ -40,6 +54,7 @@ function Dashboard() {
 					style={{
 						backgroundImage: `linear-gradient(to left, rgba(0, 0, 0, 0), rgb(255, 255, 255)), url(${land.imageUrl})`,
 					}}
+					
 				>
 					<div>
 						<p className="px-4 pt-4 text-2xl font-bold">{land.name}</p>

@@ -8,6 +8,7 @@ import AddLand from "./Pages/Dashboard/AddLand";
 import ViewLand from "./Pages/Dashboard/ViewLand";
 import TransferLand from "./Pages/Dashboard/TransferLand";
 import Chat from "./Pages/Chat";
+import Dashboard from "./Pages/Dashboard/Dashboard";
 
 function App() {
   return (
@@ -20,6 +21,8 @@ function App() {
         <Route path="/View" element={<ViewLand />} />
         <Route path="/transfer" element={<TransferLand />} />
         <Route path="/chat" element={<Chat />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+
       </Routes>
     </BrowserRouter>
   );
