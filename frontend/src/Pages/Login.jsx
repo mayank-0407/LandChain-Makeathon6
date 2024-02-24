@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-//import { loginUser } from "../Utils/authAPI";
-//import { setSessionTocken } from "../Utils/cookieSetup";
+import { loginUser } from "../utils/authAPI";
+import { setSessionTocken, isLogin } from "../utils/cookieSetup";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [sessionId, setSessionId] = useState("");
+  const [isLoggedd, setisLoggedd] = useState(false);
 
   const navigate = useNavigate();
 
@@ -17,14 +18,27 @@ function Login() {
       const response = await loginUser(values);
 
       if (response.session.sessionToken) {
+        console.log(response.session.sessionToken);
         setSessionId(response.session.sessionToken);
         setSessionTocken(response.session.sessionToken);
-        navigate("/");
+        navigate("/dashboard");
+        console.log("Successfully Logged!");
       }
     } catch (error) {
       console.log(error);
     }
   };
+
+  useEffect(() => {
+    const checkLoginSession = isLogin();
+    if (checkLoginSession) {
+      setisLoggedd(true);
+      navigate("/dashboard");
+    } else {
+      setisLoggedd(false);
+      navigate("/login");
+    }
+  }, []);
   return (
     <div
       className="h-full flex flex-row justify-center items-center font object-cover"
