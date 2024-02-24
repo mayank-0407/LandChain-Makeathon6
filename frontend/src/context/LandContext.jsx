@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { ethers } from "ethers";
 
-import { landcontractABI, landcontractAddress } from "../utils/constants";
+import { landABI, landAddress } from "../utils/constants";
 
 export const LandContext = React.createContext();
 
@@ -33,13 +33,9 @@ const LandProvider = ({ children }) => {
       if (ethereum) {
         const provider = new ethers.BrowserProvider(window.ethereum);
         const signer = await provider.getSigner();
-        const landContract = new ethers.Contract(
-          landcontractAddress,
-          landcontractABI,
-          signer
-        );
+        const landContract = new ethers.Contract(landAddress, landABI, signer);
 
-        const availableLands = await landContract.getUserVehicles(tempAddress);
+        const availableLands = await landContract.getUserLands(tempAddress);
         const structuredTransactions = availableLands.map((transaction) => ({
           landId: transaction.landId,
           location: transaction.location,
@@ -74,6 +70,7 @@ const LandProvider = ({ children }) => {
         setCurrentAccount(accounts[0]);
         getUserLandsfunc(accounts[0]);
       } else {
+        connectWallet();
         console.log("No accounts found");
       }
     } catch (error) {
@@ -87,11 +84,7 @@ const LandProvider = ({ children }) => {
         // const landContract = createEthereumContract();
         const provider = new ethers.BrowserProvider(window.ethereum);
         const signer = await provider.getSigner();
-        const landContract = new ethers.Contract(
-          landcontractAddress,
-          landcontractABI,
-          signer
-        );
+        const landContract = new ethers.Contract(landAddress, landABI, signer);
         console.log(landContract);
         console.log("In Check Transaction");
         const currentLandCount = await landContract.getLandCount();
@@ -120,6 +113,7 @@ const LandProvider = ({ children }) => {
   };
 
   const addLandToBlockchain = async (formData) => {
+    console.log("in backend", formData);
     try {
       if (window.ethereum) {
         const {
@@ -132,11 +126,7 @@ const LandProvider = ({ children }) => {
 
         const provider = new ethers.BrowserProvider(window.ethereum);
         const signer = await provider.getSigner();
-        const landContract = new ethers.Contract(
-          landcontractAddress,
-          landcontractABI,
-          signer
-        );
+        const landContract = new ethers.Contract(landAddress, landABI, signer);
         const transactionHash = await landContract.registerLand(
           location,
           area,
@@ -149,19 +139,6 @@ const LandProvider = ({ children }) => {
         await transactionHash.wait();
         console.log(`Success - ${transactionHash.hash}`);
         setIsLoading(false);
-
-        // landContract
-        //   .getLandCount()
-        //   .then((count) => {
-        //     console.log("Vehicle Count:", count);
-        //   })
-        //   .catch((error) => {
-        //     console.error("Error fetching vehicle count:", error);
-        //   });
-
-        // console.log("after LandCount_ : ");
-
-        // setLandCount(parseInt(LandCount_, 10));
       } else {
         console.log("No ethereum object");
       }
@@ -172,9 +149,47 @@ const LandProvider = ({ children }) => {
     }
   };
 
+  const transferLandfunc = async (formData) => {
+    if (!ethers.utils) {
+        throw new Error("ethers.utils is not available");
+      }
+    try {
+      if (window.ethereum) {
+        const { landId, newOwnerAddress, transferAmount } = formData;
+
+        const provider = new ethers.BrowserProvider(window.ethereum);
+        const signer = await provider.getSigner();
+        const landContract = new ethers.Contract(landAddress, landABI, signer);
+
+        const exchangeRate = 0.000012; // 1 INR = 0.000012 ETH
+        const transferAmountInWei = ethers.utils.parseUnits(
+          (transferAmount * exchangeRate).toString(),
+          "wei"
+        );
+
+        const transactionHash = await landContract.transferLand(
+          landId,
+          newOwnerAddress,
+          { value: transferAmountInWei }
+        );
+        setIsLoading(true);
+        console.log(`Loading - ${transactionHash.hash}`);
+        await transactionHash.wait();
+        console.log(`Success - ${transactionHash.hash}`);
+        setIsLoading(false);
+      } else {
+        console.log("No ethereum object");
+      }
+    } catch (error) {
+      console.log(error);
+      throw new Error("Error transferring land");
+    }
+  };
+
   useEffect(() => {
+    connectWallet();
     checkIfWalletIsConnect();
-    checkIfLandExists();
+    // checkIfLandExists();
   }, [LandCount]);
 
   return (
@@ -189,6 +204,7 @@ const LandProvider = ({ children }) => {
         handleChange,
         formData,
         checkIfWalletIsConnect,
+        transferLandfunc,
       }}
     >
       {children}

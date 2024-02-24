@@ -1,12 +1,25 @@
-import { useState } from "react";
+import React from "react";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
 import Home from "./Pages/Home";
+import Login from "./Pages/Login";
+import Signup from "./Pages/Signup";
+import AddLand from "./Pages/Dashboard/AddLand";
+import ViewLand from "./Pages/Dashboard/ViewLand";
+import TransferLand from "./Pages/Dashboard/TransferLand";
 
 function App() {
   return (
-    <>
-      <Home />
-    </>
+    <BrowserRouter className="flex items-center justify-center">
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/addland" element={<AddLand />} />
+        <Route path="/View" element={<ViewLand />} />
+        <Route path="/transfer" element={<TransferLand />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 

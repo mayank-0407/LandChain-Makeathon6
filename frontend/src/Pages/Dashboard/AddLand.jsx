@@ -1,5 +1,8 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate, NavLink } from "react-router-dom";
+import React, { useState, useEffect, useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import { LandContext } from "../../context/LandContext";
+
+// import { ethers } from "ethers";
 
 const AddLand = () => {
   const [error, setError] = useState("");
@@ -7,11 +10,37 @@ const AddLand = () => {
   const [location, setLocation] = useState("");
   const [area, setArea] = useState("");
   const [dimensionOfLand, setDimensionOfLand] = useState("");
-  const [landIdentificationNumber, setLandIdentificationNumber] = useState();
+  const [landIdentificationNumber, setLandIdentificationNumber] = useState("");
   const [landType, setLandType] = useState("");
+
   const navigate = useNavigate();
 
-  const handleNewSubmit = async (e) => {};
+  const {
+    addLandToBlockchain,
+    formData,
+    checkIfWalletIsConnect,
+  } = useContext(LandContext);
+
+  const handleNewSubmit = async (e) => {
+    e.preventDefault();
+    console.log("hi");
+
+    let tformData = {
+      location: location,
+      area: area,
+      dimensionOfLand: dimensionOfLand,
+      landIdentificationNumber: landIdentificationNumber,
+      landType: landType,
+    };
+    console.log("In frontend", tformData);
+    const tempid = addLandToBlockchain(tformData);
+    console.log(tempid);
+  };
+
+  useEffect(() => {
+    checkIfWalletIsConnect();
+    console.log("print Land added: ", formData);
+  }, []);
 
   return (
     <div
