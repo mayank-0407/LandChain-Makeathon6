@@ -4,6 +4,8 @@ import { IoSearchSharp } from "react-icons/io5";
 import cardData from "../../Components/cardData.json";
 import Header from "../../Components/Header";
 import { BiCategory } from "react-icons/bi";
+import { FaCaretDown } from "react-icons/fa";
+import { TypeAnimation } from "react-type-animation";
 
 function Dashboard() {
 	return (
@@ -16,37 +18,74 @@ function Dashboard() {
 				}}
 			>
 				<p className=" absolute top-48 bg-center text-white text-5xl pb-4 font-bold drop-shadow-xl">
-					Land Chain...
+					<TypeAnimation
+						sequence={[
+							// Same substring at the start will only be typed out once, initially
+							"Block Chain",
+							4000, // wait 1s before replacing "Mice" with "Hamsters"
+							"Tech Chain",
+							1500,
+							"Data Chain",
+							1500,
+							"Trust Chain",
+							1500,
+							"Secure Chain",
+							1500,
+							"Smart Chain",
+							1500,
+							"Land Chain",
+							4000,
+						]}
+						wrapper="span"
+						speed={50}
+						style={{ fontSize: "50px", display: "inline-block" }}
+						className="drop-shadow-xl"
+						repeat={Infinity}
+					/>
 				</p>
 
 				<div className="flex flex-col p-5 w-full items-center justify-center">
 					<div className="flex flex-row mb-6 w-full justify-center items-center">
-						<div className="h-12 w-12 flex ml-5 justify-center items-center bg-slate-800 rounded-xl cursor-pointer shadow-xl">
-							<BiCategory className="text-white" />
+						<div
+							className="h-12 p-4 flex flex-row ml-12 justify-center text-sm items-center bg-slate-800 rounded-xl cursor-pointer text-white shadow-xl"
+							style={{ whiteSpace: "nowrap" }}
+						>
+							By Category
+							<FaCaretDown className="text-white ml-2" />
 						</div>
+						<select
+							className="absolute top-0 left-20 h-full w-auto opacity-0 cursor-pointer"
+							style={{ zIndex: 10 }}
+						>
+							<option value="all">All Categories</option>
+							<option value="category1">Location</option>
+							<option value="category2">Area</option>
+							<option value="category3">Type</option>
+							<option value="category4">Price</option>
+						</select>
+
 						<input
 							type="text"
 							className="h-12 ml-2 pl-4 w-full rounded-l-xl border-2 border-r-0 shadow-xl"
 							placeholder="Search for property by Location ,owner Name"
 						/>
-						<div className="h-12 p-2 flex mr-5 justify-center items-center bg-slate-800 rounded-r-xl cursor-pointer text-white shadow-xl">
+						<div className="h-12 p-4 flex mr-14 justify-center items-center bg-slate-800 rounded-r-xl cursor-pointer text-white shadow-xl">
 							Search
-							<IoSearchSharp className="text-white" />
+							<IoSearchSharp className="text-white ml-2" />
 						</div>
 					</div>
 
-					<ul className="flex flex-row justify-center">
-						<li></li>
-						<button className="p-4 px-36 mr-8 rounded-md bg-slate-600 text-white">
+					<ul className="flex flex-row justify-center ">
+						<button className="flex flex-row  p-4 px-36 mr-8 w-16 rounded-md bg-slate-600 hover:bg-slate-800 justify-center text-white text-nowrap">
+							Add New Land
+						</button>
+						<button className="flex p-4 px-36 mr-8 w-16 rounded-md bg-slate-600 hover:bg-slate-800 text-white justify-center text-nowrap">
+							Marketplace
+						</button>
+						<button className="flex p-4 px-36 mr-8 w-16 rounded-md bg-slate-600 hover:bg-slate-800 text-white justify-center text-nowrap">
 							ews
 						</button>
-						<button className="p-4 px-36 mr-8 rounded-md bg-slate-600 text-white">
-							ews
-						</button>
-						<button className="p-4 px-36 mr-8 rounded-md bg-slate-600 text-white">
-							ews
-						</button>
-						<button className="p-4 px-36 rounded-md bg-slate-600 text-white">
+						<button className="flex p-4 px-36 rounded-md w-16 bg-slate-600 hover:bg-slate-800 text-white justify-center text-nowrap">
 							ews
 						</button>
 					</ul>
