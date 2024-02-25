@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { LandContext } from "../../context/LandContext";
+import HeaderAdmin from "../../Components/HeaderAdmin";
 
 import { ethers } from "ethers";
 
@@ -30,7 +31,8 @@ const TransferLand = () => {
     console.log("hi");
 
     let tformData = {
-      landId:23605435676249247752549801217230229776778712319924822140605527300529037770752n,
+      landId:
+        23605435676249247752549801217230229776778712319924822140605527300529037770752n,
       newOwnerAddress,
       transferAmount,
     };
@@ -44,16 +46,19 @@ const TransferLand = () => {
 
   return (
     <div
-      className="h-full flex flex-row justify-center items-center font object-cover"
+      className="h-screen flex flex-col justify-center items-center font object-cover"
       style={{
-        backgroundImage: `url("https://images.unsplash.com/photo-1622547748225-3fc4abd2cca0?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D")`,
+        backgroundImage: `url(
+          "https://images.unsplash.com/photo-1622547748225-3fc4abd2cca0?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+        )`,
       }}
     >
-      <div className="   m-20 h-full  flex flex-row items-center justify-center rounded-xl backdrop-brightness-90">
-        <div className="flex flex-col md:flex-row">
-          <div className=" order-2 md:order-1">
-            <div className="p-8">
-              <h1 className="text-3xl font-bold mb-4 text-center">
+      <HeaderAdmin />
+      <div className="   m-20 p-10  flex flex-row items-center justify-center rounded-xl backdrop-brightness-90 w-1/3">
+        <div className=" w-full flex flex-col md:flex-row  ">
+          <div className="  w-full order-2 md:order-1">
+            <div className="p-4 ">
+              <h1 className="text-3xl font-bold mb-8 text-center">
                 Transfer Land
               </h1>
 

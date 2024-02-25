@@ -20,10 +20,10 @@ function App() {
         <Route path="/signup" element={<Signup />} />
         <Route path="/addland" element={<AddLand />} />
         <Route path="/View" element={<ViewLand />} />
-        <Route path="/transfer" element={<TransferLand />} />
         <Route path="/chat" element={<Chat />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/Market" element={<Market />} />
+        <Route path="/transfer/:id" element={<TransferLand />} />
       </Routes>
     </BrowserRouter>
   );

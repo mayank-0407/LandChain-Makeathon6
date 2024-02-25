@@ -10,6 +10,7 @@ import { loginUser } from "../../utils/authAPI";
 import { setSessionTocken, isLogin } from "../../utils/cookieSetup";
 import { useNavigate } from "react-router-dom";
 import { LandContext } from "../../context/LandContext";
+import { Link } from "react-router-dom";
 
 function Dashboard() {
   const [isLoggedd, setisLoggedd] = useState(false);
@@ -129,7 +130,14 @@ function Dashboard() {
           }}
         >
           <div>
-            <p className="px-4 pt-4 text-2xl font-bold">{land.name}</p>
+            <p
+              onClick={() => {
+                navigate(`/transfer/${land.landId}`);
+              }}
+              className="px-4 pt-4 text-2xl font-bold"
+            >
+              {land.landId}
+            </p>
             {land.landType === 0 ? (
               <p className="pl-4 ">Government</p>
             ) : land.landType == 1 ? (
@@ -150,11 +158,13 @@ function Dashboard() {
               </div>
             </div>
           </div>
-          <p className="p-4 text-lg font-bold">
-            Owner: {land.currentOwner}
-            <br></br>
-            Current Rate: ₹{land.transferAmount.toString()}/-
-          </p>
+          <Link to={`/transfer/${land.landId}`}>
+            <p className="p-4 text-lg font-bold">
+              Owner: {land.currentOwner}
+              <br></br>
+              Current Rate: ₹{land.transferAmount.toString()}/-
+            </p>
+          </Link>
         </div>
       ))}
     </div>
