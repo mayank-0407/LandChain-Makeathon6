@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { MdLocationPin } from "react-icons/md";
 import { IoSearchSharp } from "react-icons/io5";
 import cardData from "../../Components/cardData.json";
@@ -9,10 +9,17 @@ import { TypeAnimation } from "react-type-animation";
 import { loginUser } from "../../utils/authAPI";
 import { setSessionTocken, isLogin } from "../../utils/cookieSetup";
 import { useNavigate } from "react-router-dom";
+import { LandContext } from "../../context/LandContext";
 
 function Dashboard() {
   const [isLoggedd, setisLoggedd] = useState(false);
+  const { transactions, checkIfWalletIsConnect } = useContext(LandContext);
+
   const navigate = useNavigate();
+  useEffect(() => {
+    checkIfWalletIsConnect();
+  }, []);
+
   useEffect(() => {
     const checkLoginSession = isLogin();
     if (checkLoginSession) {
@@ -113,7 +120,7 @@ function Dashboard() {
 
       <p className="text-xl mt-8 m-4 font-bold">My Lands</p>
 
-      {cardData.lands.map((land, index) => (
+      {transactions.map((land, index) => (
         <div
           key={index}
           className="flex flex-col w-2/3 h-72 bg-slate-700 rounded-lg m-4 object-fill bg-cover  justify-between shadow-2xl"
@@ -123,9 +130,20 @@ function Dashboard() {
         >
           <div>
             <p className="px-4 pt-4 text-2xl font-bold">{land.name}</p>
-            <p className="pl-4 ">{land.type}</p>
+            {land.landType === 0 ? (
+              <p className="pl-4 ">Government</p>
+            ) : land.landType == 1 ? (
+              <p className="pl-4 ">Commercial</p>
+            ) : land.landType == 2 ? (
+              <p className="pl-4 ">Agricultural</p>
+            ) : land.landType == 3 ? (
+              <p className="pl-4 ">Industrial</p>
+            ) : (
+              <p className="pl-4 ">Residential</p>
+            )}
+            <p className="pl-4 ">Dimension : {land.dimensionOfLand}</p>
             <div className="flex flex-row">
-              <p className="pl-4 ">Area,</p>
+              <p className="pl-4 ">{land.area},</p>
               <div className="flex flex-row items-center">
                 <MdLocationPin className="ml-1" />
                 <p>{land.location}</p>
@@ -133,7 +151,9 @@ function Dashboard() {
             </div>
           </div>
           <p className="p-4 text-lg font-bold">
-            Current Rate: ₹{land.currentRate}/-
+            Owner: {land.currentOwner}
+            <br></br>
+            Current Rate: ₹{land.transferAmount.toString()}/-
           </p>
         </div>
       ))}
