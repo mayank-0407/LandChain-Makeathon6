@@ -1,6 +1,6 @@
 import cookie from "js-cookie";
 import axios from "axios";
-import { isSessionValid } from "./authAPI";
+import { isSessionValid } from "./API/authAPI";
 
 const API_URL = "http://localhost:3000/auth";
 export const setCookie = (key, value) => {
@@ -15,7 +15,7 @@ export const getCookie = (key) => {
   return cookie.get(key);
 };
 
-export const setSessionTocken = (token) => {
+export const setSessionToken = (token) => {
   setCookie("token", token);
 };
 
@@ -42,6 +42,7 @@ export const isLogin = () => {
 
 export const getToken = () => {
   const token = getCookie("token");
+  console.log("In cookie : ", token);
   isLogin();
   return token;
 };

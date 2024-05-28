@@ -1,15 +1,22 @@
 import React, { useState, useEffect, useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { LandContext } from "../../context/LandContext";
 import HeaderAdmin from "../../Components/HeaderAdmin";
-
+import axios from "axios";
 import { ethers } from "ethers";
+import { createTransferLand } from "../../utils/API/transferAPI";
+import { getOneLand } from "../../utils/API/landAPI";
+
 
 const TransferLand = () => {
   const [error, setError] = useState("");
   const [iserror, setIsError] = useState(false);
   const [newOwnerAddress, setNewOwnerAddress] = useState("");
+  const [newOwnerId, setNewOwnerId] = useState("");
   const [transferAmount, setTransferAmount] = useState("");
+  const [predictionn, setPrediction] = useState("");
+
+  const landId = useParams();
 
   const navigate = useNavigate();
 
@@ -28,20 +35,53 @@ const TransferLand = () => {
 
   const handleNewSubmit = async (e) => {
     e.preventDefault();
-    console.log("hi");
+    // console.log("hi");
+    
+    const land = await getOneLand(landId);
+    
+    console.log("transfer Land identi number  : ",land.data.landIdentificationNumber);
+    if(transferAmount*1000 < 0.8*predictionn){
+      console.log("Amount is less than 80% of the predicted value So Case will is Filed!",0.8*predictionn);
+    }
 
-    let tformData = {
-      landId:
-        23605435676249247752549801217230229776778712319924822140605527300529037770752n,
-      newOwnerAddress,
-      transferAmount,
+    const transferData = {
+      prevOwnerId: land.data.ownerId,
+      currentAccount,
+      currentOwnerId: newOwnerId,
+      currentOwnerAddress: newOwnerAddress,
+      landId: land.data.landIdentificationNumber,
+      landIdBackend: land.data.id,
+      landStatus: "with new user",
+      transferAmount
     };
-    const tempid = transferLandfunc(tformData);
-    console.log(tempid);
+    const tempid = await transferLandfunc(transferData);
+
+    const response = await createTransferLand(transferData);
+    // console.log("response : ",response);
+    if(response.status==200){
+      navigate("/dashboard");
+    }
+    else
+    console.log(response.error);
   };
+
+  const handlePrediction = async () => {
+    try {
+        const response = await axios.post('http://localhost:5000/predict', {
+            Area_SqFt: 1000,
+            Floor_No: 2, 
+            Bedroom: 3
+        });
+        setPrediction(response.data.prediction/100);
+        console.log("Predicted Price : ",response.data.prediction/100," Cr");
+    } catch (error) {
+        console.error('Error:', error);
+    }
+};
 
   useEffect(() => {
     checkIfWalletIsConnect();
+    handlePrediction();
   }, []);
 
   return (
@@ -77,6 +117,25 @@ const TransferLand = () => {
                     value={newOwnerAddress}
                     onChange={(e) => setNewOwnerAddress(e.target.value)}
                     placeholder="Enter the newOwnerAddress!"
+                    className="w-full p-2 border border-gray-300 rounded-2xl mb-2 text-sm bg-blue-50 opacity-50"
+                    required
+                  />
+                </div>
+
+                <div className="mb-2">
+                  <label
+                    htmlFor="newOwnerId"
+                    className="block mb-2 text-left font-semibold"
+                  >
+                    Id of the new owner
+                  </label>
+                  <input
+                    type="text"
+                    name="newOwnerId"
+                    id="newOwnerId"
+                    value={newOwnerId}
+                    onChange={(e) => setNewOwnerId(e.target.value)}
+                    placeholder="Enter the newOwnerId!"
                     className="w-full p-2 border border-gray-300 rounded-2xl mb-2 text-sm bg-blue-50 opacity-50"
                     required
                   />

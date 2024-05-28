@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { ethers } from "ethers";
 
-import { landABI, landAddress } from "../utils/constants";
+import { landABI, landAddress } from "../utils/Web3/constants";
 
 export const LandContext = React.createContext();
 
@@ -49,8 +49,8 @@ const LandProvider = ({ children }) => {
           currentOwner: transaction.currentOwner,
         }));
 
-        console.log("All Transactions : ", structuredTransactions);
-        console.log("In get All Transaction");
+        // console.log("All Transactions : ", structuredTransactions);
+        // console.log("In get All Transaction");
         setTransactions(structuredTransactions);
       } else {
         console.log("Ethereum is not present");
@@ -85,8 +85,8 @@ const LandProvider = ({ children }) => {
         const provider = new ethers.BrowserProvider(window.ethereum);
         const signer = await provider.getSigner();
         const landContract = new ethers.Contract(landAddress, landABI, signer);
-        console.log(landContract);
-        console.log("In Check Transaction");
+        // console.log(landContract);
+        // console.log("In Check Transaction");
         const currentLandCount = await landContract.getLandCount();
 
         window.localStorage.setItem("LandCount", currentLandCount);
@@ -113,8 +113,8 @@ const LandProvider = ({ children }) => {
   };
 
   const addLandToBlockchain = async (formData) => {
-    console.log("in backend", formData);
-    try {
+    // console.log("in backend", formData);
+    if (true) {
       if (window.ethereum) {
         const {
           location,
@@ -142,17 +142,17 @@ const LandProvider = ({ children }) => {
       } else {
         console.log("No ethereum object");
       }
-    } catch (error) {
-      console.log(error);
-
-      throw new Error("No ethereum object");
     }
+    // catch (error) {
+    //   console.log(error);
+    //   throw new Error("Error In Adding Land");
+    // }
   };
 
   const transferLandfunc = async (formData) => {
     if (true) {
       if (window.ethereum) {
-        const { landId, newOwnerAddress, transferAmount } = formData;
+        const { landId, currentOwnerAddress, transferAmount } = formData;
 
         const provider = new ethers.BrowserProvider(window.ethereum);
         const signer = await provider.getSigner();
@@ -167,20 +167,19 @@ const LandProvider = ({ children }) => {
           params: [
             {
               from: currentAccount,
-              to: newOwnerAddress,
+              to: currentOwnerAddress,
               gas: "0x5208",
               value: parsedAmount.toString(16),
             },
           ],
         });
-        console.log("parsedAmount : ", parsedAmount);
+        // console.log("parsedAmount : ", parsedAmount.toString(16));
 
         const transactionHash = await landContract.transferLand(
           landId,
-          newOwnerAddress,
-          transferAmount
+          currentOwnerAddress, 
+          String(parsedAmount)
         );
-        console.log("Error aya error");
         setIsLoading(true);
         console.log(`Loading - ${transactionHash.hash}`);
         await transactionHash.wait();
